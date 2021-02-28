@@ -1,0 +1,5 @@
+{
+  "moduleNames": ["shared"],
+  "packagesPath": "packages",
+  "modulesPath": "modules"
+}

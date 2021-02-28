@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "inlineSourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "paths": {
+      "@lib": ["src/lib"],
+      "@env": ["src/config/env"],
+      "@logger": ["src/logger"],
+      "@http-error": ["src/exceptions/http-error"],
+      "@services/*": ["src/core/services/*"],
+      "@pipes/*": ["src/pipes/*"],
+      "@middlewares/*": ["src/middlewares/*"]
+    }
+  }
+}
