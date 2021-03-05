@@ -12,7 +12,7 @@ export class HttpErrorFilter implements ExceptionFilter<HttpError> {
     // Log the error
     const errorMsg = error.stack || error.message;
     logger.error(errorMsg, { error });
-    console.log(error);
+
     const httpError = error instanceof HttpError ? error : HttpError.fromError(error, 500);
 
     res.status(httpError.status).json(httpError.serializeJson());
