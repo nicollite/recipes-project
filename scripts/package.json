@@ -4,10 +4,12 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "npx rimraf dist && ttsc -p tsconfig.json"
+    "build": "npx rimraf dist && ttsc -p tsconfig.json",
+    "run-script": "yarn build && bin/cli"
   },
   "bin": {
-    "recipes-project-scripts": "bin/cli"
+    "recipes-project-scripts": "bin/cli",
+    "rps": "bin/cli"
   },
   "dependencies": {
     "commander": "^7.1.0",

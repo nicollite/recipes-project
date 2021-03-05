@@ -2,19 +2,25 @@ import { program } from "commander";
 import { cd } from "shelljs";
 import { install } from "source-map-support";
 import { config } from "./config";
-import { wrapAction } from "./helpers";
+import { wrapAction, wrapJustOptions } from "./helpers";
+
+// Actions
 import { build, buildModules } from "./scripts/build-modules";
+import { selfBuild } from "./scripts/self-build";
 
 // Use source map support
 install();
 
 program.version("1.0.0");
 
+program.command("self-build").description("build the scripts").action(selfBuild);
+
 // Build all modules
 program
   .command("build-modules")
+  .option("-c, --copy <path>", "copy the built package to the destination")
   .description("build all the modules in modules folder")
-  .action(() => buildModules(config.moduleNames));
+  .action(wrapJustOptions(buildModules));
 
 // Build a specific module
 program

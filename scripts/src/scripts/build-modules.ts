@@ -2,14 +2,30 @@ import { cd, cp, exec, ls, mkdir } from "shelljs";
 import { fileExists, rmdir } from "src/helpers";
 import { config } from "../config";
 
+export interface BuildModulesOptions {
+  copy: string;
+}
+
 /**
  * Build all modules in modules folder
  * @param modulesFolders The modules folder name
  */
-export function buildModules(modulesFolders: string[]): void {
+export function buildModules(options: BuildModulesOptions): void {
+  const { copy } = options;
+
   if (!fileExists("packages", ".")) mkdir(config.packagesPath);
 
-  modulesFolders.forEach(build);
+  // Build each module
+  config.moduleNames.forEach(build);
+
+  // Copy the built modules to the destination
+  if (copy) {
+    const packageDirName = config.packagesPath.split("/").pop();
+    rmdir(`${copy}/${packageDirName}`);
+    cd(copy);
+    cp("-r", config.packagesPath, ".");
+    exec(`yarn upgrade ${config.moduleNames.join(" ")}`);
+  }
 }
 
 /**
@@ -26,7 +42,6 @@ export function build(moduleName: string): void {
   // Remove the old package in packages folder and create another
   const modulePath = `${config.modulesPath}/${moduleName}`;
   const packagesPath = `${config.packagesPath}/${moduleName}`;
-  console.log({ modulePath, packagesPath });
 
   if (fileExists(moduleName, config.packagesPath)) rmdir(packagesPath);
   mkdir(packagesPath);
