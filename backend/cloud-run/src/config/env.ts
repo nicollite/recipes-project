@@ -18,3 +18,7 @@ export interface Env {
 
 /** Environment object */
 export const env: Env = Object.assign({}, process.env) as any;
+env.NODE_ENV = env.NODE_ENV || "dev";
+env.PORT = env.PORT || "3000";
+env.HOST = env.HOST || "localhost";
+env.MONGO_DB_URL = env.MONGO_DB_URL || "mongodb://127.0.0.1:27017";
