@@ -1,0 +1,69 @@
+.RecipeList {
+  padding: 10px;
+  --flex-gap: 20px;
+
+  .filters {
+    padding: 0px 35px;
+  }
+
+  .page-navigator {
+    --flex-gap: 10px;
+
+    > * {
+      align-self: center;
+    }
+
+    .styled-square {
+      padding: 3px;
+      width: 20px;
+      height: 20px;
+      align-self: center;
+      background-color: var(--primary);
+      color: #fff;
+      text-align: center;
+      border-radius: 4px;
+      line-height: 22px;
+    }
+
+    .style-square-icon {
+      background-color: #d3d3d3;
+      cursor: pointer;
+      padding: 3px 5px 3px 1px;
+      &:hover {
+        background-color: var(--primary);
+      }
+    }
+
+    .disabled-style-square-icon {
+      cursor: auto;
+      &:hover {
+        background-color: #d3d3d3;
+      }
+    }
+  }
+
+  .recipe-columns-wrapper {
+    .recipe-card {
+      width: 45%;
+      > button {
+        height: 100%;
+      }
+    }
+  }
+
+  .recipe-card-texts {
+    padding: 15px;
+    --flex-gap: 10px;
+    height: 100%;
+    cursor: pointer;
+
+    span {
+      font-size: 14px;
+    }
+
+    .recipe-title {
+      font-size: 24px;
+      font-weight: bolder;
+    }
+  }
+}
