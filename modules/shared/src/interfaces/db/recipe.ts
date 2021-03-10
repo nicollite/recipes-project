@@ -5,6 +5,7 @@ import { ObjectId } from "bson";
 export interface IRecipe {
   _id?: string | ObjectId;
   recipe_name: string;
+  description: string;
   ingredients: Ingredient[];
   cook_phases: CookPhase[];
   portions_amount: number;
