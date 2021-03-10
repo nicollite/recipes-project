@@ -1,8 +1,9 @@
 import { logger } from "@logger";
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
 import { GetRecipesPageQuery, IRecipe } from "shared";
+import { AuthGuard } from "src/guards/auth.guard";
 import { Recipe, RecipeDocument } from "src/schemas/recipes";
 import { ParseGetQueryPipe } from "./parse-get-query.pipe";
 
@@ -37,6 +38,7 @@ export class RecipesController {
   }
 
   @Post()
+  @UseGuards(AuthGuard)
   async createRecipe(@Body() body: IRecipe | IRecipe[]) {
     logger.info("creating recipes...", { recipes: body });
     if (Array.isArray(body)) {
@@ -48,6 +50,7 @@ export class RecipesController {
   }
 
   @Put()
+  @UseGuards(AuthGuard)
   async updateRecipe(@Body() body: IRecipe) {
     logger.info("updating recipe...", { recipes: body });
     return this.recipeModel.updateOne(
