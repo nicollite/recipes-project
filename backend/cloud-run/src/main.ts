@@ -14,6 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new HttpErrorFilter());
   app.use(routeLogger);
+  app.enableCors();
   await app.listen(env.PORT, env.HOST, () => {
     logger.info(`listening on http://${env.HOST}:${env.PORT}`);
   });
