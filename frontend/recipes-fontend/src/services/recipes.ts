@@ -27,5 +27,5 @@ export const createRecipe = (recipe: IRecipe): Promise<IRecipe> => {
   return api.post<IRecipe>("/recipes", recipe).then(res => res.data);
 };
 export const updateRecipe = (recipe: IRecipe): Promise<IRecipe> => {
-  return api.put<IRecipe>("/recipes", recipe).then(res => res.data);
+  return api.put<IRecipe>("/recipes", recipe).then(() => recipe);
 };
