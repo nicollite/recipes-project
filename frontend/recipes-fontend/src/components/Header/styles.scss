@@ -1,0 +1,21 @@
+.Header {
+  padding-right: 20px;
+  nav {
+    --flex-gap: 20px;
+
+    button {
+      height: 100%;
+      padding: 0px 10px;
+      a {
+        font-size: 18px;
+        color: #fff;
+      }
+    }
+
+    .logged-user {
+      span {
+        font-size: 18px;
+      }
+    }
+  }
+}
