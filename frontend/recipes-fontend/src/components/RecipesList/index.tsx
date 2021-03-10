@@ -41,7 +41,10 @@ const RecipesList = () => {
 
   function changePage(change: "previous" | "next") {
     let pageNumber = change === "previous" ? page - 1 : page + 1;
-    if (pageNumber < 0) pageNumber = 0;
+    if (pageNumber < 0) {
+      pageNumber = 0;
+      return;
+    }
     dispatch(getRecipesNextPage({ lastId, pageSize }));
     setPage(pageNumber);
   }
