@@ -1,0 +1,93 @@
+.Recipe {
+  padding: 45px;
+  --flex-gap: 30px;
+
+  // Set --flex-gap for the children of .Recipe children
+  & > * > * {
+    --flex-gap: 10px;
+  }
+
+  .title,
+  .title input {
+    font-size: 24px !important;
+    font-weight: bolder !important;
+  }
+
+  .subtitle,
+  .subtitle input {
+    font-size: 20px;
+    font-weight: bolder;
+  }
+
+  .edit-button {
+    padding: 10px 30px;
+  }
+
+  .recipe-info,
+  .recipe-info-edit {
+    .recipe-info-frames {
+      display: grid;
+      grid-template-areas:
+        "info info info"
+        "author author author";
+      gap: 5px;
+
+      & > * {
+        height: 50px;
+        background-color: #eee;
+        padding: 30px 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+
+        span {
+          font-size: 14px;
+        }
+
+        span:first-of-type {
+          text-transform: uppercase;
+          color: #5a5a5a;
+          font-size: 16px;
+          font-weight: bold;
+        }
+      }
+
+      .author {
+        grid-area: author;
+      }
+    }
+
+    &.recipe-info-edit {
+      .MuiTextField-root {
+        width: 100%;
+        input {
+          color: #5a5a5a;
+          font-size: 16px;
+          font-weight: bold;
+        }
+      }
+      .preparation-time > * {
+        width: 40%;
+      }
+    }
+  }
+
+  .cook-phase-edit {
+    .cook-phase-title-edit {
+      margin-bottom: 25px !important;
+    }
+  }
+
+  .input-text-removebtn-list {
+    .MuiTextField-root {
+      width: 100%;
+    }
+  }
+
+  .add-button {
+    width: fit-content;
+    padding-right: 30px;
+  }
+}
