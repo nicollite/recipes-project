@@ -1,14 +1,10 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { logger } from "@logger";
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
-import { IRecipe } from "shared";
+import { GetRecipesPageQuery, IRecipe } from "shared";
 import { Recipe, RecipeDocument } from "src/schemas/recipes";
-
-export interface GetAllRecipesQuery {
-  /** The last id to query */
-  lastId?: string;
-  pageSize: number;
-}
+import { ParseGetQueryPipe } from "./parse-get-query.pipe";
 
 export interface GetRecipeParam {
   id: string;
@@ -19,13 +15,12 @@ export class RecipesController {
   constructor(@InjectModel(Recipe.name) private recipeModel: Model<RecipeDocument>) {}
 
   @Get()
-  async getAllRecipes(@Query() query: GetAllRecipesQuery) {
+  async getRecipesPage(@Query(ParseGetQueryPipe) query: GetRecipesPageQuery) {
     // Destructure the query string, set the lastId to a initial object
     const { lastId = 0, pageSize = 10 } = query;
 
     return this.recipeModel
-      .find({ _id: { $gt: new Types.ObjectId(lastId) } })
-      .sort({ _id: 1 })
+      .find({ $query: { _id: { $gt: new Types.ObjectId(lastId) } }, $orderby: { created_at: -1 } })
       .limit(pageSize)
       .exec();
   }
@@ -43,6 +38,7 @@ export class RecipesController {
 
   @Post()
   async createRecipe(@Body() body: IRecipe | IRecipe[]) {
+    logger.info("creating recipes...", { recipes: body });
     if (Array.isArray(body)) {
       const recipes = body.map(recipe => new this.recipeModel(recipe));
       return this.recipeModel.insertMany(recipes).then(docs => docs.map(doc => doc.toJSON()));
@@ -53,9 +49,10 @@ export class RecipesController {
 
   @Put()
   async updateRecipe(@Body() body: IRecipe) {
+    logger.info("updating recipe...", { recipes: body });
     return this.recipeModel.updateOne(
       { _id: new Types.ObjectId(body._id) },
-      new this.recipeModel(body)
+      new this.recipeModel(body),
     );
   }
 }
