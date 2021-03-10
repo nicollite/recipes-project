@@ -14,6 +14,8 @@ export interface Env {
   HOST: string;
   /** MongoDB url */
   MONGO_DB_URL: string;
+  /** Auth test token */
+  TEST_TOKEN: string;
 }
 
 /** Environment object */
