@@ -10,6 +10,9 @@ export class Recipe implements Partial<IRecipe> {
   @Prop()
   recipe_name: string;
 
+  @Prop()
+  description: string;
+
   @Prop(raw([{ ...text, _id: false }]))
   ingredients: Ingredient[];
 
