@@ -20,10 +20,9 @@ export class RecipesController {
     // Destructure the query string, set the lastId to a initial object
     const { lastId = 0, pageSize = 10 } = query;
 
-    return this.recipeModel
-      .find({ $query: { _id: { $gt: new Types.ObjectId(lastId) } }, $orderby: { created_at: -1 } })
-      .limit(pageSize)
-      .exec();
+    const find = lastId ? new Types.ObjectId(lastId) : {};
+
+    return this.recipeModel.find(find).sort({ _id: -1 }).limit(pageSize).exec();
   }
 
   @Get("/:id")
