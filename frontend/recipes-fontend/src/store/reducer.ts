@@ -14,7 +14,6 @@ export const initialState: ApplicationState = {
   user: {
     data: null,
     jwt: null,
-    uid: null,
   },
 };
 
@@ -22,17 +21,16 @@ export type ActionMapFn = (action: ApplicationAction) => (state: ApplicationStat
 export type ActionMapKeys = ApplicationAction["type"];
 export type ActionMap = Record<ActionMapKeys, ActionMapFn>;
 
+/** Map with the action type as the key and a ActionMapFn as the value  */
 const actionMap: ActionMap = {
   "user/login": (action: UserLoginAction) => state => {
     state.user.data = action.user;
-    state.user.uid = action.uid;
     state.user.jwt = action.jwt;
   },
   "user/logout": () => state => {
     state.user = {
       data: null,
       jwt: null,
-      uid: null,
     };
   },
   "recipes/set": (action: RecipeSetAction) => state => {
@@ -50,6 +48,7 @@ const actionMap: ActionMap = {
   },
 };
 
+// Empty function if the type is not finded in the actionMap
 const emptyFn = () => () => {};
 
 export const reducer = (state = initialState, action: ApplicationAction) => {

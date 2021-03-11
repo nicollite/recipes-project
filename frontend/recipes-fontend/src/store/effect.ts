@@ -44,6 +44,7 @@ export const logout = (): Effect => async dispatch => {
   auth.signInSub.next(false);
 };
 
+/** Try log the user */
 export const setPersistentLogin = (): Effect => async dispatch => {
   const userLoginData = await auth.persistentLogin();
   if (userLoginData) dispatch(userLogin(userLoginData));

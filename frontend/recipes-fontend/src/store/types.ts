@@ -5,14 +5,12 @@ import { Observable } from "rxjs";
 /** JWT for refreshing token with backend */
 export interface AuthJwt {
   token: string;
-  timestamp: number;
   expiration: number;
 }
 
 export interface UserState {
   data?: IUser;
   jwt?: AuthJwt;
-  uid: string;
 }
 
 export interface ApplicationState {
@@ -25,7 +23,6 @@ export interface ApplicationState {
 // Action data
 
 export interface UserLoginData {
-  uid: string;
   user: IUser;
   jwt: AuthJwt;
 }
@@ -33,6 +30,11 @@ export interface UserLoginData {
 // User
 export interface UserLoginAction extends Action, UserLoginData {
   type: "user/login";
+}
+
+export interface UserSetTokenAction extends Action {
+  type: "user/setToken";
+  jwt: AuthJwt;
 }
 
 export interface UserLogoutAction extends Action {

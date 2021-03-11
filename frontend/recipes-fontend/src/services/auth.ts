@@ -3,8 +3,7 @@ import { auth } from "src/firebase/firebase";
 import firebase from "firebase/app";
 import { api } from "src/services/api";
 import { UserLoginData } from "src/store/types";
-import { Subject } from "rxjs";
-import { take } from "rxjs/operators";
+import { Observable, Subject } from "rxjs";
 
 export const signInSub = new Subject<boolean>();
 export const signIn$ = signInSub.asObservable();
@@ -21,7 +20,6 @@ export const login = async (email?: string, password?: string): Promise<UserLogi
   const authUser = auth.currentUser
     ? auth.currentUser
     : await auth.signInWithEmailAndPassword(email, password).then(userCred => userCred.user);
-  const uid = authUser.uid;
   const token = await authUser?.getIdToken();
   const user = await api
     .get<IUser>("/user", {
@@ -32,11 +30,9 @@ export const login = async (email?: string, password?: string): Promise<UserLogi
 
   return {
     user,
-    uid,
     jwt: {
       token,
-      timestamp: Date.now(),
-      expiration: 3600 * 1000,
+      expiration: Date.now() + 3600 * 1000, // 1 hour
     },
   };
 };
@@ -72,26 +68,28 @@ export const signUp = async (
 
   return {
     user,
-    uid,
     jwt: {
       token,
-      timestamp: Date.now(),
-      expiration: 3600 * 1000,
+      expiration: Date.now() + 3600 * 1000, // 1 hour
     },
   };
 };
 
+/** Get the current user token from auth */
+export const getUserToken = (): Promise<string> => auth.currentUser?.getIdToken();
+
+/** Sign out of authenticator */
 export const signOut = async () => {
   await auth.signOut();
 };
 
+/** Login the user with persistence if the user exists */
 export const persistentLogin = (): Promise<UserLoginData> => {
-  const persistenceSub = new Subject<UserLoginData>();
-  // Will return the user or null, if the user do the login and emit the user data else emit null
-  auth.onAuthStateChanged(async user => {
-    if (user) persistenceSub.next(await login());
-    else persistenceSub.next(null);
-    persistenceSub.complete();
-  });
-  return persistenceSub.pipe(take(1)).toPromise();
+  return new Observable<UserLoginData>(sub => {
+    auth.onAuthStateChanged(async user => {
+      if (user) sub.next(await login());
+      else sub.next(null);
+      sub.complete();
+    });
+  }).toPromise();
 };

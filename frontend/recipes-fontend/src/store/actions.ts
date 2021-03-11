@@ -5,12 +5,21 @@ import {
   UserLogoutAction,
   RecipeSetAction,
   RecipeEditAction,
+  UserSetTokenAction,
 } from "./types";
 
 // user
 export const userLogin = (userLogin: UserLoginData): UserLoginAction => ({
   type: "user/login",
   ...userLogin,
+});
+
+export const userSetToken = (token: string): UserSetTokenAction => ({
+  type: "user/setToken",
+  jwt: {
+    token,
+    expiration: Date.now(),
+  },
 });
 
 export const userLogout = (): UserLogoutAction => ({
